@@ -13,7 +13,7 @@
             <li>
                 <div>
                 <a href="{{ url_for('coupon_detail', code=coupon.code) }}">{{ coupon.code }}</a>
-                
+                <img src="{{ coupon['img'] }}" alt="Imagen del Cupón" style="width: 100px;">
                 <!-- Botón para compartir por WhatsApp -->
                 <!-- <button id="whatsapp-button" class="whatsapp-button" onclick="shareOnWhatsApp()" {{ 'disabled' if coupon.redeemed else '' }}>
                     Compartir por WhatsApp

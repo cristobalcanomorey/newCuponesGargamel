@@ -42,33 +42,25 @@ unlocked_coupons = []
 
 @app.route('/')
 def index():
-    
     today = datetime.now().strftime('%Y-%m-%d')
-    
-    # Leer y decodificar la cookie
-    unlocked_dates_cookie = request.cookies.get('unlocked_coupons', '')
-    unlocked_dates = unquote(unlocked_dates_cookie).split(",") if unlocked_dates_cookie else []
-    
-    # Cargar los cupones desbloqueados basados en las fechas
-    unlocked_coupons.clear()  # Limpiar la lista actual
-    for date in unlocked_dates:
-        if date:  # Ignorar cadenas vacías
-            # Buscar el cupón por su fecha
-            if date in coupons:
-                coupon = coupons[date]
-                if coupon not in unlocked_coupons:
-                    unlocked_coupons.append(coupon)
-    print( unlocked_coupons )
+
+    # Leer la cookie correctamente
+    unlocked_coupons_cookie = request.cookies.get('unlocked_coupons', '{}')
+    try:
+        unlocked_coupons_data = json.loads(unlocked_coupons_cookie)
+    except json.JSONDecodeError:
+        unlocked_coupons_data = {}
+
+    # Verificar si el cupón de hoy ya está desbloqueado
+    if today in unlocked_coupons_data:
+        return redirect(url_for('coupon_list'))  # Evitar mostrar el regalo de nuevo
+
     if today in coupons:
         coupon = coupons[today]
-        if coupon in unlocked_coupons:
-            # Si el cupón del día ya está desbloqueado, redirigir a la lista de cupones
-            return redirect(url_for('coupon_list'))
-        else:
-            # Si no está desbloqueado, mostrar el GIF
-            return render_template('index.html', today=today, coupon=coupon)
+        return render_template('index.html', today=today, coupon=coupon)
     else:
         return "No hay cupones disponibles hoy."
+
 
 from flask import jsonify
 
@@ -76,21 +68,30 @@ from flask import jsonify
 def unlock_coupon(date):
     if date in coupons:
         coupon = coupons[date]
-        
-        # Leer y decodificar la cookie existente
+
+        # Leer y decodificar la cookie correctamente
         unlocked_coupons_cookie = request.cookies.get('unlocked_coupons', '{}')
-        unlocked_coupons = json.loads(unlocked_coupons_cookie)
-        
+        try:
+            unlocked_coupons = json.loads(unlocked_coupons_cookie)
+        except json.JSONDecodeError:
+            unlocked_coupons = {}
+
         # Si el cupón no está en la lista, agregarlo
         if date not in unlocked_coupons:
-            unlocked_coupons[date] = {"code": coupon["code"], "description": coupon["description"], "redeemed": False}
-        
+            unlocked_coupons[date] = {
+                "code": coupon["code"],
+                "description": coupon["description"],
+                "img": coupon["img"],
+                "redeemed": False
+            }
+
         # Guardar la cookie actualizada
-        response = make_response(jsonify(coupon))  # Devolver el cupón en formato JSON
-        response.set_cookie('unlocked_coupons', json.dumps(unlocked_coupons))  # Convertir el diccionario en una cadena JSON
+        response = make_response(jsonify(coupon))
+        response.set_cookie('unlocked_coupons', json.dumps(unlocked_coupons), httponly=True, max_age=60*60*24*365)
         return response
     else:
         return jsonify({"error": "Cupón no disponible."}), 404
+
 
 @app.route('/redeem/<code>')
 def redeem_coupon(code):
@@ -112,6 +113,10 @@ def redeem_coupon(code):
 
 @app.route('/unlocked/<code>')
 def unlocked_coupon(code):
+# Buscar el cupón en los desbloqueados
+    unlocked_coupons_cookie = request.cookies.get('unlocked_coupons', '{}')
+    unlocked_coupons = json.loads(unlocked_coupons_cookie)
+
     coupon = next((c for c in unlocked_coupons if c['code'] == code), None)
     if coupon:
         return render_template('unlocked_coupon.html', coupon=coupon)
@@ -124,8 +129,12 @@ def coupon_list():
     unlocked_coupons_cookie = request.cookies.get('unlocked_coupons', '{}')
     unlocked_coupons = json.loads(unlocked_coupons_cookie)
     
+
     # Convertir el diccionario en una lista para la plantilla
     coupons_list = [coupon for coupon in unlocked_coupons.values()]
+    print(json.dumps(coupons_list, indent=4))
+    print("Cupones desbloqueados:", coupons_list)  
+
     return render_template('coupon_list.html', coupons=coupons_list)
 
 @app.route('/coupon/<code>')
@@ -137,7 +146,7 @@ def coupon_detail(code):
     # Buscar el cupón por su código
     coupon = next((coupon for coupon in unlocked_coupons.values() if coupon["code"] == code), None)
     if coupon:
-        return render_template('unlocked_coupon.html', coupon=coupon)
+        return render_template('coupon_detail.html', coupon=coupon)
     else:
         return "Cupón no encontrado."
 

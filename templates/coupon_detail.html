@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalle del Cupón</title>
-    <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
     <h1>Detalle del Cupón</h1>
+    <img src="../{{ coupon.img }}" alt="Imagen del Cupón" class="coupon-image" id="coupon-image">
     <p>Código: {{ coupon.code }}</p>
     <p>Descripción: {{ coupon.description }}</p>
     <a href="{{ url_for('coupon_list') }}">Volver a la lista de cupones</a>
-    <script src="static/js/script.js">    </script>
+    <!-- <script src="static/js/script.js">    </script> -->
 </body>
 </html>

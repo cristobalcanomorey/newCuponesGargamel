@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>¡Cupón Desbloqueado!</h1>
-    <img src="{{ coupon.image }}" alt="Imagen del Cupón" class="coupon-image" id="coupon-image">
+    <img src="{{ coupon['img'] }}" alt="Imagen del Cupón" class="coupon-image" id="coupon-image">
     <p>Código: {{ coupon.code }}</p>
     <p>Descripción: {{ coupon.description }}</p>
     <a href="{{ url_for('coupon_list') }}">Ver todos los cupones desbloqueados</a>

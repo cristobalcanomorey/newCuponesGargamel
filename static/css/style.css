@@ -11,3 +11,21 @@
     background-color: #ccc;
     cursor: not-allowed;
 }
+
+.flex{
+    display: flex;
+}
+.column{
+    flex-direction: column;
+}
+.m-auto{
+    margin: auto;
+}
+img{
+    width: 60%;
+    height: auto;
+}
+
+h2,h1,p{
+    text-align: center;
+}

@@ -1,39 +1,39 @@
-// Obtener referencias a los elementos del DOM
-const unlockLink = document.getElementById('unlock-link');
-const gifContainer = document.getElementById('gif-container');
-const secondGifContainer = document.getElementById('second-gif-container');
-const unlockedCouponContainer = document.getElementById('unlocked-coupon-container');
-const couponCode = document.getElementById('coupon-code');
-const couponDescription = document.getElementById('coupon-description');
+// // Obtener referencias a los elementos del DOM
+// const unlockLink = document.getElementById('unlock-link');
+// const gifContainer = document.getElementById('gif-container');
+// const secondGifContainer = document.getElementById('second-gif-container');
+// const unlockedCouponContainer = document.getElementById('unlocked-coupon-container');
+// const couponCode = document.getElementById('coupon-code');
+// const couponDescription = document.getElementById('coupon-description');
 
 
-unlockLink.addEventListener('click', async (event) => {
-    event.preventDefault(); // Evitar que el enlace recargue la página
+// unlockLink.addEventListener('click', async (event) => {
+//     event.preventDefault(); // Evitar que el enlace recargue la página
 
-    // Ocultar el GIF inicial y mostrar el segundo GIF
-    gifContainer.classList.add('hidden');
-    secondGifContainer.classList.remove('hidden');
+//     // Ocultar el GIF inicial y mostrar el segundo GIF
+//     gifContainer.classList.add('hidden');
+//     secondGifContainer.classList.remove('hidden');
 
-    // Esperar 2 segundos
-    await new Promise(resolve => setTimeout(resolve, 1700));
+//     // Esperar 2 segundos
+//     await new Promise(resolve => setTimeout(resolve, 1700));
 
-    // Obtener el cupón del día
-    const today = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
-    const response = await fetch(`/unlock/${today}`);
-    if (response.ok) {
-        const coupon = await response.json();
+//     // Obtener el cupón del día
+//     const today = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+//     const response = await fetch(`/unlock/${today}`);
+//     if (response.ok) {
+//         const coupon = await response.json();
 
-        // Mostrar el cupón desbloqueado
-        couponCode.textContent = coupon.code;
-        couponDescription.textContent = coupon.description;
-        secondGifContainer.classList.add('hidden');
-        unlockedCouponContainer.classList.remove('hidden');
-    } else {
-        alert("Error al desbloquear el cupón.");
-    }
+//         // Mostrar el cupón desbloqueado
+//         couponCode.textContent = coupon.code;
+//         couponDescription.textContent = coupon.description;
+//         secondGifContainer.classList.add('hidden');
+//         unlockedCouponContainer.classList.remove('hidden');
+//     } else {
+//         alert("Error al desbloquear el cupón.");
+//     }
 
     
-});
+// });
 
 // function shareOnWhatsApp() {
 //     const couponCode = document.getElementById('coupon-code').textContent;
