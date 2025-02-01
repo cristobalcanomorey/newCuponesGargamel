@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cupón Desbloqueado</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <h1>¡Cupón Desbloqueado!</h1>
+    <img src="{{ coupon.image }}" alt="Imagen del Cupón" class="coupon-image" id="coupon-image">
+    <p>Código: {{ coupon.code }}</p>
+    <p>Descripción: {{ coupon.description }}</p>
+    <a href="{{ url_for('coupon_list') }}">Ver todos los cupones desbloqueados</a>
+    <!-- Botón para compartir por WhatsApp -->
+    <!-- <button id="whatsapp-button" class="whatsapp-button" onclick="shareOnWhatsApp()" {{ 'disabled' if coupon.redeemed else '' }}>
+        Compartir por WhatsApp
+    </button> -->
+</body>
+</html>

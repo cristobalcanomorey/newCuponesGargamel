@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cupones Gargamel</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        // Manejar el clic en el GIF
+
+    </script>
+</head>
+<body>
+    <h1>¡Desbloquea tu cupón de hoy!</h1>
+    
+    <!-- Contenedor para el GIF inicial -->
+    <div id="gif-container">
+        <a href="#" id="unlock-link">
+            <img src="static/img/gift.gif" alt="Regalo" id="gif">
+        </a>
+    </div>
+
+    <!-- Contenedor para el segundo GIF -->
+    <div id="second-gif-container" class="hidden">
+        <img src="static/img/opened-gift.gif" alt="Regalo Abierto" id="second-gif">
+    </div>
+
+    <!-- Contenedor para el cupón desbloqueado -->
+    <div id="unlocked-coupon-container" class="hidden">
+        <h2>¡Cupón Desbloqueado!</h2>
+        <img src="{{ coupon.image }}" alt="Imagen del Cupón" class="coupon-image" id="coupon-image">
+        <p>Código: <span id="coupon-code"></span></p>
+        <p>Descripción: <span id="coupon-description"></span></p>
+        <p>Entra a diario para desbloquear nuevos cupones</p>
+        <a href="/coupons">Ver todos los cupones desbloqueados</a>
+    </div>
+
+    <script src="static/js/script.js">    </script>
+</body>
+</html>
