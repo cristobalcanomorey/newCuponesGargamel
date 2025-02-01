@@ -13,7 +13,7 @@
     
 </head>
 <body>
-    <h1>¡Desbloquea tu cupón de hoy!</h1>
+    <h1 id="title">¡Desbloquea tu cupón de hoy!</h1>
     
     <!-- Contenedor para el GIF inicial -->
     <div class="flex" id="gif-container">
@@ -29,11 +29,12 @@
 
     <!-- Contenedor para el cupón desbloqueado -->
     <div id="unlocked-coupon-container" class="hidden flex column">
-        <h2 class="m-auto">¡Cupón Desbloqueado!</h2>
+        <h1 class="m-auto">¡Cupón Desbloqueado!</h1>
         <img  src="{{ coupon.img }}" alt="Imagen del Cupón" class="coupon-image m-auto" id="coupon-image">
+        <h2 class="m-auto"><span id="coupon-title"></span></h2>
         <p class="m-auto hidden">Código: <span id="coupon-code"></span></p>
         <p class="m-auto"><span id="coupon-description"></span></p>
-        <p class="m-auto">Entra a diario para desbloquear nuevos cupones</p>
+        <p class="m-auto promo">Entra a diario para desbloquear nuevos cupones</p>
         <a class="m-auto" href="/coupons">Ver todos los cupones desbloqueados</a>
     </div>
 
@@ -46,6 +47,8 @@ const secondGifContainer = document.getElementById('second-gif-container');
 const unlockedCouponContainer = document.getElementById('unlocked-coupon-container');
 const couponCode = document.getElementById('coupon-code');
 const couponDescription = document.getElementById('coupon-description');
+const title = document.getElementById('title');
+const couponTitle = document.getElementById('coupon-title');
 
 
 unlockLink.addEventListener('click', async (event) => {
@@ -63,11 +66,13 @@ unlockLink.addEventListener('click', async (event) => {
     const response = await fetch(`/unlock/${today}`);
     if (response.ok) {
         const coupon = await response.json();
-
+        console.log(coupon);
         // Mostrar el cupón desbloqueado
         couponCode.textContent = coupon.code;
         couponDescription.textContent = coupon.description;
+        couponTitle.textContent = coupon.titulo;
         secondGifContainer.classList.add('hidden');
+        title.classList.add('hidden');
         unlockedCouponContainer.classList.remove('hidden');
     } else {
         alert("Error al desbloquear el cupón.");

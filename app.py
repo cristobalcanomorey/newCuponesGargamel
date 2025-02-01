@@ -82,6 +82,7 @@ def unlock_coupon(date):
                 "code": coupon["code"],
                 "description": coupon["description"],
                 "img": coupon["img"],
+                "titulo": coupon["titulo"],
                 "redeemed": False
             }
 

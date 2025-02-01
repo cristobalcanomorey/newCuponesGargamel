@@ -15,6 +15,16 @@
 .flex{
     display: flex;
 }
+
+#gif-container > a, #second-gif-container{
+    height: 80vh;
+}
+
+.coupon-image{
+    width: 88%;
+    margin: 20px !important;
+}
+
 .column{
     flex-direction: column;
 }
@@ -22,10 +32,18 @@
     margin: auto;
 }
 img{
-    width: 60%;
+    width: 100%;
     height: auto;
 }
 
 h2,h1,p{
     text-align: center;
+}
+p{
+    margin: 50px;
+}
+
+.promo{
+    font-weight: bold;
+    margin: 20px;
 }
