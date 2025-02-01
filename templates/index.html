@@ -59,7 +59,7 @@ unlockLink.addEventListener('click', async (event) => {
     secondGifContainer.classList.remove('hidden');
 
     // Esperar 2 segundos
-    await new Promise(resolve => setTimeout(resolve, 1700));
+    await new Promise(resolve => setTimeout(resolve, 1500));
 
     // Obtener el cupón del día
     const today = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
