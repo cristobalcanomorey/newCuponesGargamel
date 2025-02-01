@@ -12,8 +12,9 @@
         {% for coupon in coupons %}
             <li>
                 <div>
-                <a href="{{ url_for('coupon_detail', code=coupon.code) }}">{{ coupon.code }}</a>
-                <img src="{{ coupon['img'] }}" alt="Imagen del Cupón" style="width: 100px;">
+                <a class="flex" href="{{ url_for('coupon_detail', code=coupon.code) }}">
+                   <img src="{{ coupon['img'] }}" alt="Imagen del Cupón" class="coupon-image-list m-auto">
+                </a>
                 <!-- Botón para compartir por WhatsApp -->
                 <!-- <button id="whatsapp-button" class="whatsapp-button" onclick="shareOnWhatsApp()" {{ 'disabled' if coupon.redeemed else '' }}>
                     Compartir por WhatsApp

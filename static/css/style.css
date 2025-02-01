@@ -12,6 +12,19 @@
     cursor: not-allowed;
 }
 
+ul{
+    list-style-type: none;
+    padding: 0;
+    margin-top: 80px;
+}
+
+li{
+    margin-top: 15px;
+}
+
+img.coupon-image-list{
+    width: 56%;
+}
 .flex{
     display: flex;
 }
