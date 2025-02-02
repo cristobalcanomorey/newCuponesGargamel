@@ -78,6 +78,10 @@ Te quiero mucho Rocío, siempre te he querido aunque no haya sabido lo que ello 
         "titulo": "Suministro de galletas",
         "description": "🍪🍪Una vez activado el cupón te preparo una tanda de galletas de chocolate para dártelas la próxima vez que nos veamos 🍪🍪",
         "rules": "Puedes activarlo tantas veces como quieras",
+        "canjeable": True,
+        "serio": True,
+        "rules": "Puedes activarlo tantas veces como quieras",
+        "toggle": True,
         "activado": False,
         "img": "static/img/gargamelGalletas.jpeg", 
         "date": "2025-02-03"
