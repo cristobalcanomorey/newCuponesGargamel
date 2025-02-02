@@ -5,17 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalle del Cupón</title>
     <link rel="stylesheet" href="../static/css/style.css">
+    <script src="static/js/script.js"></script>
 </head>
 <body >
-    <div class="flex column">
+    <div class="flex column {{ 'redeemed' if coupon.redeemed else '' }}" id="coupon-container">
         <h1 class="m-auto">Detalle del Cupón</h1>
         <img src="../{{ coupon.img }}" alt="Imagen del Cupón" class="coupon-image m-auto" id="coupon-image">
         <h2 class="m-auto">{{ coupon.titulo }}</h2>
         <p class="m-auto">Código: {{ coupon.code }}</p>
+        <p class="m-auto">Fecha: {{ coupon.date }}</p>
         <p class="m-auto">Descripción: {{ coupon.description }}</p>
         
         <a class="m-auto" href="{{ url_for('coupon_list') }}">Volver a la lista de cupones</a>
+
+        <button id="whatsapp-button" class="whatsapp-button {% if not coupon.canjeable %}hidden{% endif %}   {% if coupon.redeemed %}hidden{% endif %}">
+            Activar cupón
+        </button>
     </div>
-    <!-- <script src="static/js/script.js">    </script> -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const couponCode = "{{ code }}";  // Código desde Flask
+        const unlockedCoupons = JSON.parse(localStorage.getItem("unlocked_coupons")) || {};
+
+        if (unlockedCoupons[couponCode]) {
+            document.getElementById("coupon-title").textContent = unlockedCoupons[couponCode].titulo;
+            document.getElementById("coupon-description").textContent = unlockedCoupons[couponCode].description;
+            document.getElementById("coupon-image").src = unlockedCoupons[couponCode].img;
+        } else {
+            document.body.innerHTML = "<h1>Cupón no encontrado.</h1>";
+        }
+    });
+        document.addEventListener("DOMContentLoaded", function () {
+            const whatsappButton = document.getElementById("whatsapp-button");
+            const couponContainer = document.getElementById("coupon-container");
+            // const couponImage = document.getElementById("coupon-image").src;
+            const couponCode = "{{ coupon.code }}";
+            const couponTitle = "{{ coupon.titulo }}";
+            const couponDescription = "{{ coupon.description }}";
+            const phoneNumber = "609512301"; // Reemplaza con el número real
+
+            // Verificar si el cupón ya está activado
+            // const redeemedCoupons = JSON.parse(localStorage.getItem("redeemed_coupons") || "{}");
+            // if (redeemedCoupons[couponCode]) {
+            //     couponContainer.classList.add("redeemed");
+            //     whatsappButton.disabled = true;
+            // }
+
+    whatsappButton.addEventListener("click", async function () {
+        const message = ` ¡Cupón canjeado! \n\nCupón: ${couponTitle}\n`;
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+        // Abrir WhatsApp
+        window.open(whatsappUrl, "_blank");
+
+
+         // Enviar solicitud al servidor para actualizar la cookie
+        const response = await fetch(`/redeem/${couponCode}`, { method: "POST" });
+
+        if (response.ok) {
+            // Aplicar sombreado y deshabilitar botón
+            couponContainer.classList.add("redeemed");
+            whatsappButton.disabled = true;
+        } else {
+            alert("Hubo un error al activar el cupón.");
+        }
+
+        // Guardar el cupón como activado en localStorage
+        // redeemedCoupons[couponCode] = true;
+        // localStorage.setItem("redeemed_coupons", JSON.stringify(redeemedCoupons));
+
+        // // Aplicar sombra y deshabilitar botón
+        // couponContainer.classList.add("redeemed");
+        // whatsappButton.disabled = true;
+    });
+});
+</script>
 </body>
 </html>

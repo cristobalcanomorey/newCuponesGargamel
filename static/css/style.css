@@ -11,6 +11,16 @@
     background-color: #ccc;
     cursor: not-allowed;
 }
+.pre-wrap{
+    white-space: pre-wrap;
+}
+
+.hidden{
+    display: none;
+}
+.p-top{
+    padding-top: 50px;
+}
 
 ul{
     list-style-type: none;
@@ -22,8 +32,12 @@ li{
     margin-top: 15px;
 }
 
-img.coupon-image-list{
+ul > li > div > a{
     width: 56%;
+}
+
+img.coupon-image-list{
+    width: 100%;
 }
 .flex{
     display: flex;
@@ -59,4 +73,22 @@ p{
 .promo{
     font-weight: bold;
     margin: 20px;
+}
+
+.redeemed {
+    /* position: relative; */
+    opacity: 0.5;
+    /* pointer-events: none;  */
+}
+.redeemed::after {
+    content: "Cupón Activado";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px;
+    font-size: 1.5em;
+    border-radius: 5px;
 }

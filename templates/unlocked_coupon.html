@@ -8,13 +8,59 @@
 </head>
 <body>
     <h1>¡Cupón Desbloqueado!</h1>
-    <img src="{{ coupon['img'] }}" alt="Imagen del Cupón" class="coupon-image" id="coupon-image">
+
+    <div id="coupon-container">
+        <img src="{{ coupon['img'] }}" alt="Imagen del Cupón" class="coupon-image" id="coupon-image">
+        <p>Código: {{ coupon.code }}</p>
+        <p>Descripción: {{ coupon.description }}</p>
+    </div>
+
+    <a href="{{ url_for('coupon_list') }}">Ver todos los cupones desbloqueados</a>
+
+    <button id="whatsapp-button" class="whatsapp-button">Enviar por WhatsApp</button>
+
+    <!-- <img src="{{ coupon['img'] }}" alt="Imagen del Cupón" class="coupon-image" id="coupon-image">
     <p>Código: {{ coupon.code }}</p>
     <p>Descripción: {{ coupon.description }}</p>
-    <a href="{{ url_for('coupon_list') }}">Ver todos los cupones desbloqueados</a>
+    <a href="{{ url_for('coupon_list') }}">Ver todos los cupones desbloqueados</a> -->
+
     <!-- Botón para compartir por WhatsApp -->
     <!-- <button id="whatsapp-button" class="whatsapp-button" onclick="shareOnWhatsApp()" {{ 'disabled' if coupon.redeemed else '' }}>
         Compartir por WhatsApp
     </button> -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const whatsappButton = document.getElementById("whatsapp-button");
+            const couponContainer = document.getElementById("coupon-container");
+            const couponImage = document.getElementById("coupon-image").src;
+            const couponCode = "{{ coupon.code }}";
+            const couponDescription = "{{ coupon.description }}";
+            const phoneNumber = "609512301"; // Reemplaza con el número real
+
+            // Verificar si el cupón ya está activado
+            const redeemedCoupons = JSON.parse(localStorage.getItem("redeemed_coupons") || "{}");
+            if (redeemedCoupons[couponCode]) {
+                couponContainer.classList.add("redeemed");
+                whatsappButton.disabled = true;
+            }
+
+    whatsappButton.addEventListener("click", function () {
+        const message = ` ¡Cupón activado! \n\nCódigo: ${couponCode}\nDescripción: ${couponDescription}`;
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+        // Abrir WhatsApp
+        window.open(whatsappUrl, "_blank");
+
+        // Guardar el cupón como activado en localStorage
+        redeemedCoupons[couponCode] = true;
+        localStorage.setItem("redeemed_coupons", JSON.stringify(redeemedCoupons));
+
+        // Aplicar sombra y deshabilitar botón
+        couponContainer.classList.add("redeemed");
+        whatsappButton.disabled = true;
+    });
+});
+</script>
 </body>
 </html>

@@ -5,25 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Cupones Gargamel Desbloqueados</title>
     <link rel="stylesheet" href="static/css/style.css">
+    <script src="static/js/script.js"></script>
 </head>
 <body>
     <h1>Cupones Gargamel Desbloqueados</h1>
     <ul>
         {% for coupon in coupons %}
-            <li>
-                <div>
-                <a class="flex" href="{{ url_for('coupon_detail', code=coupon.code) }}">
-                   <img src="{{ coupon['img'] }}" alt="Imagen del Cupón" class="coupon-image-list m-auto">
-                </a>
-                <!-- Botón para compartir por WhatsApp -->
-                <!-- <button id="whatsapp-button" class="whatsapp-button" onclick="shareOnWhatsApp()" {{ 'disabled' if coupon.redeemed else '' }}>
-                    Compartir por WhatsApp
-                </button> -->
-                </div>
-            </li>
+            {% if not coupon.serio %}
+                <li>
+                    <div>
+                    <a class="flex m-auto" href="{{ url_for('coupon_detail', code=coupon.code) }}">
+                    <img src="{{ coupon['img'] }}" alt="Imagen del Cupón" class="coupon-image-list m-auto">
+                    </a>
+                    <!-- Botón para compartir por WhatsApp -->
+                    <!-- <button id="whatsapp-button" class="whatsapp-button" onclick="shareOnWhatsApp()" {{ 'disabled' if coupon.redeemed else '' }}>
+                        Compartir por WhatsApp
+                    </button> -->
+                    </div>
+                </li>
+            {% else %}
+                <li>
+                    <div>
+                        <a class="flex m-auto" href="{{ url_for('coupon_detail', code=coupon.code) }}">
+                            {{ coupon.titulo }}
+                        </a>
+                    </div>
+                </li>
+            {% endif %}
         {% endfor %}
     </ul>
     <p class="m-auto promo">Entra a diario para desbloquear nuevos cupones</p>
-    <script src="static/js/script.js">    </script>
+    <script >
+    document.addEventListener("DOMContentLoaded", function () {
+    let unlockedCoupons = JSON.parse(localStorage.getItem("unlocked_coupons")) || {};
+    const couponList = document.querySelector("ul");
+
+    for (const date in unlockedCoupons) {
+        const coupon = unlockedCoupons[date];
+
+        const listItem = document.createElement("li");
+        const link = document.createElement("a");
+        link.href = `/coupon/${coupon.code}`;
+        link.textContent = coupon.titulo;
+
+        listItem.appendChild(link);
+        couponList.appendChild(listItem);
+    }
+});
+
+    </script>
 </body>
 </html>
